@@ -35,6 +35,8 @@ void importCSV(std::ifstream& fin, std::vector<std::vector<double> > &data) {
 
 void printData(std::vector<std::vector<double> > data) {
     for (int i = 0; i < data.size(); i++) {
+        std::cout << i+1 << " - ";
+
         for (int j = 0; j < data[0].size(); j++)
             std::cout << std::setw(5) << data[i][j];
 
