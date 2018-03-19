@@ -10,6 +10,17 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
+    int k;
+    std::stringstream ss(argv[2]);
+
+    if(!(ss >> k) || k < 1) {
+        std::cerr << "enter a valid number for k" << std::endl;
+        return 2;
+    }
+        
+
+
+
     std::string file = argv[1];
     std::vector<std::vector<double> > data;
 
@@ -21,9 +32,12 @@ int main(int argc, char const *argv[])
 
     else {
         std::cerr << "invalid file type. file must be .txt or .csv\n";
-        return 2;
+        return 3;
     }
 
-    printData(data);
+    //printData(data);
+
+    std::vector<std::vector<double> > centroids = initializeCentroids(data);
+
     return 0;
 }
