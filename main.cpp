@@ -35,13 +35,10 @@ int main(int argc, char const *argv[])
         return 3;
     }
 
-    std::vector<int> clusters;
     std::vector<std::vector<double> > centroid = initializeCentroids(data, k);
-    clusterData(data, centroid, clusters);
+    std::vector<int> clusters;
 
-    printData(centroid);
-    std::cout << std::endl;
-    printData(data, clusters);
+    calculateFinalClusters(data, centroid, clusters);
 
     return 0;
 }

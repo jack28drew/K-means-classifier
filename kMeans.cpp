@@ -38,7 +38,7 @@ void printData(std::vector<std::vector<double> > data) {
         std::cout << i << " - ";
 
         for (int j = 0; j < data[0].size(); j++)
-            std::cout << std::setw(5) << data[i][j];
+            std::cout << std::setw(8) << std::left << std::setprecision(5) << data[i][j];
 
         std::cout << std::endl;
     }
@@ -80,8 +80,7 @@ std::vector<std::vector<double> > initializeCentroids(std::vector<std::vector<do
     return centroid;
 }
 
-
-void clusterData(std::vector<std::vector<double> > data, std::vector<std::vector<double> > centroid, std::vector<int> &clusters) {
+void clusterData(std::vector<std::vector<double> > data, std::vector<std::vector<double> > centroid, std::vector<int> &cluster) {
 
     for(int i=0; i < data.size(); i++) {
         std::vector<double> distanceToCentroid(centroid.size());
@@ -99,10 +98,57 @@ void clusterData(std::vector<std::vector<double> > data, std::vector<std::vector
             }
         }
 
-        clusters.push_back(nearestCentroid);
+        cluster.push_back(nearestCentroid);
     }
 }
 
+std::vector<std::vector<double> > updateCentroids(std::vector<std::vector<double> > data, std::vector<int> cluster, std::vector<std::vector<double> > &centroid) {
+    std::vector<std::vector<double> > newCentroid(centroid.size());
+
+    for(int i=0; i < centroid.size(); i++) {         //loop through each centroid
+        for(int j=0; j < centroid[i].size(); j++) {         //loop through each dimension of current centroid 
+            double dimensionMean = 0;
+            int clusterCount = 0;
+
+            for(int k=0; k < data.size(); k++) {                //loop through each data point at current dimension
+                /* if cluster assignment at data point k == current centroid, add 
+                current dimension at current data point to mean and increment count*/
+                if(cluster[k] == i) {
+                    dimensionMean += data[k][j];
+                    clusterCount++;
+                }
+            }
+            newCentroid[i][j] = dimensionMean / clusterCount;
+        }
+    }
+    return newCentroid;
+}
+
+void calculateFinalClusters(std::vector<std::vector<double> > data, std::vector<std::vector<double> > &centroid, std::vector<int> &clusters) {
+    std::vector<std::vector<double> > newCentroid(centroid.size());
+    bool run = true;
+    
+    clusterData(data, centroid, clusters);
+
+    //while(!compareVector2d(centroid, newCentroid)) {
+        newCentroid = updateCentroids(data, clusters, centroid);
+        clusterData(data, centroid, clusters);
+    //}
+}
+
+bool compareVector2d(std::vector<std::vector<double> > vectorA, std::vector<std::vector<double> > vectorB) {
+    if(vectorA.size() != vectorB.size() || vectorA[0].size() != vectorB[0].size())
+        return false;
+    else {
+        for(int i=0; i < vectorA.size(); i++) {
+            for(int j=0; j < vectorA[0].size(); j++) {
+                if(vectorA[i][j] != vectorB[i][j])
+                    return false;
+            }
+        }
+    }
+    return true;
+}
 
 double toDouble(std::string s) {
     double d;
