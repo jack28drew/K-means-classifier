@@ -107,13 +107,11 @@ void clusterData(std::vector<std::vector<double> > data, std::vector<std::vector
             }
         }
 
-        cluster.push_back(nearestCentroid);
+        cluster[i] = nearestCentroid;
     }
 }
 
-std::vector<std::vector<double> > updateCentroids(std::vector<std::vector<double> > data, std::vector<int> cluster, std::vector<std::vector<double> > &centroid) {
-    std::vector<std::vector<double> > newCentroid(centroid.size());
-
+void updateCentroids(std::vector<std::vector<double> > data, std::vector<int> cluster, std::vector<std::vector<double> > &centroid) {
     for(int i=0; i < centroid.size(); i++) {         //loop through each centroid
         for(int j=0; j < centroid[i].size(); j++) {         //loop through each dimension of current centroid 
             double dimensionMean = 0;
@@ -127,22 +125,23 @@ std::vector<std::vector<double> > updateCentroids(std::vector<std::vector<double
                     clusterCount++;
                 }
             }
-            newCentroid[i][j] = dimensionMean / clusterCount;
+            centroid[i][j] = dimensionMean / clusterCount;
         }
     }
-    return newCentroid;
 }
 
 void calculateFinalClusters(std::vector<std::vector<double> > data, std::vector<std::vector<double> > &centroid, std::vector<int> &clusters) {
-    std::vector<std::vector<double> > newCentroid(centroid.size());
+    std::vector<std::vector<double> > oldCentroid(centroid.size());
     bool run = true;
-    
-    clusterData(data, centroid, clusters);
 
-    //while(!compareVector2d(centroid, newCentroid)) {
-        //newCentroid = updateCentroids(data, clusters, centroid);
-        //clusterData(data, centroid, clusters);
-    //}
+    while(run) {
+        oldCentroid = centroid;
+        updateCentroids(data, clusters, centroid);
+        clusterData(data, centroid, clusters);
+
+        if(compareVector2d(centroid, oldCentroid) == true)
+            run = false;
+    }
 }
 
 bool compareVector2d(std::vector<std::vector<double> > vectorA, std::vector<std::vector<double> > vectorB) {

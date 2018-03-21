@@ -19,7 +19,7 @@ void printOutputFile(std::ofstream&, std::vector<std::vector<double> >, std::vec
 double euclideanDistance(std::vector<double>, std::vector<double>);
 std::vector<std::vector<double> > initializeCentroids(std::vector<std::vector<double> >, int);
 void clusterData(std::vector<std::vector<double> >, std::vector<std::vector<double> >, std::vector<int>&);
-std::vector<std::vector<double> > updateCentroids(std::vector<std::vector<double> >, std::vector<int>, std::vector<std::vector<double> >&);
+void updateCentroids(std::vector<std::vector<double> >, std::vector<int>, std::vector<std::vector<double> >&);
 void calculateFinalClusters(std::vector<std::vector<double> >, std::vector<std::vector<double> >&, std::vector<int>&);
 
 bool compareVector2d(std::vector<std::vector<double> >, std::vector<std::vector<double> >);

@@ -36,9 +36,11 @@ int main(int argc, char const *argv[])
     }
 
     std::vector<std::vector<double> > centroid = initializeCentroids(data, k);
-    std::vector<int> clusters;
+    std::vector<int> clusters(data.size());
 
     clusterData(data, centroid, clusters);
+
+    calculateFinalClusters(data, centroid, clusters);
 
     std::ofstream fout;
     fout.open("output.txt");
