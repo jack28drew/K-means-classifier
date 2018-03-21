@@ -53,6 +53,15 @@ void printData(std::vector<std::vector<double> > data, std::vector<int> clusters
     }
 }
 
+void printOutputFile(std::ofstream &fout, std::vector<std::vector<double> > data, std::vector<int> clusters) {
+    for(int i=0; i < data.size(); i++) {
+        for(int j=0; j < data[i].size(); j++)
+            fout << std::setw(5) << data[i][j];
+
+        fout << std::setw(3) << clusters[i] << std::endl;
+    }
+}
+
 double euclideanDistance(std::vector<double> pointA, std::vector<double> pointB) {
     double distance = 0;
 
@@ -131,8 +140,8 @@ void calculateFinalClusters(std::vector<std::vector<double> > data, std::vector<
     clusterData(data, centroid, clusters);
 
     //while(!compareVector2d(centroid, newCentroid)) {
-        newCentroid = updateCentroids(data, clusters, centroid);
-        clusterData(data, centroid, clusters);
+        //newCentroid = updateCentroids(data, clusters, centroid);
+        //clusterData(data, centroid, clusters);
     //}
 }
 
