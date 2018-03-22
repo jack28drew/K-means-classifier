@@ -56,9 +56,9 @@ void printData(std::vector<std::vector<double> > data, std::vector<int> clusters
 void printOutputFile(std::ofstream &fout, std::vector<std::vector<double> > data, std::vector<int> clusters) {
     for(int i=0; i < data.size(); i++) {
         for(int j=0; j < data[i].size(); j++)
-            fout << std::setw(5) << data[i][j];
+            fout << data[i][j] << " ";
 
-        fout << std::setw(3) << clusters[i] << std::endl;
+        fout << clusters[i] << std::endl;
     }
 }
 
